@@ -1,0 +1,59 @@
+
+
+{% extends 'geekshop/base.html' %}
+{% load static %}
+
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'basketapp/js/basket_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    {% include 'geekshop/includes/inc_main_menu.html' %}
+    <div class="basket_list">
+        <div class="details">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Товар</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Стоимость</th>
+                <th scope="col">Удалить</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in basket_items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        <input type="number" name="{{ item.pk }}" min="0" value="{{ item.quantity }}">
+                    </td>
+                    <td>{{ item.product.price }} &nbspруб</td>
+                    <td>
+                        <button class="btn btn-round">
+                            <a href="{% url 'basket:remove' item.pk %}" class="">
+                                удалить
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if basket_items %}
+        <div class="basket_summary">
+            В корзине {{ basket_items.0.total_quantity }} товаров общей стоимостью
+            {{ basket_items.0.total_cost }} руб
+        </div>
+    {% endif %}
+    </div>
+
+    <button class="btn btn-round">
+        <a href="{% url 'index' %}">на главную</a>
+    </button>
+    </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+
+{% extends 'geekshop/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'geekshop/includes/inc_main_menu.html' %}
+<div class="details">
+    {% include 'mainapp/includes/inc_category_menu.html' %}
+
+
+<div class="details-products">
+        <div class="details-slider">
+            <div class="slider-product">
+                <img src="/media/{{ product.image }}">
+            </div>
+            <div class="slider-control">
+                <div class="block">
+                    <a href="#"><img src="/media/{{ product.image }}" style="width: 100%" alt="">
+                        <div class="text"></div>
+                    </a>
+                </div>
+                <div class="block">
+                    <a href="#"><img src="/media/{{ product.image }}" style="width: 100%" alt="">
+                        <div class="text"></div>
+                    </a>
+                </div>
+                <div class="block">
+                    <a href="#"><img src="/media/{{ product.image }}" style="width: 100%" alt="">
+                        <div class="text"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            <h3 class="big-bold">{{ product.name }}</h3>
+            <h3 class="red">горячее предложение</h3>
+            <p class="price"> {{ product.price }} <span>руб</span></p>
+            <a href="{% url 'basket:add' product.pk %}" class="red-button">
+                заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </a>
+            <div class="description-text">
+                {{ product.description }}
+            </div>
+        </div>
+    </div>
+
+    <div class="related">
+        <div class="title clearfix">
+            <h2>Похожие продукты</h2>
+            <a class="explore" href="#">показать все <img src="/static/geekshop/img/arrow.png" alt=""></a>
+        </div>
+        <div class="related-products clearfix">
+            {% for product_rel in related_products %}
+            <div class="block">
+                <a href="#"><img src="/media/{{ product_rel.image }}" alt="">
+                    <div class="text">
+                        <img src="/static/geekshop/img/icon-hover.png" alt="img">
+                        <h4>{{ product_rel.name }}</h4>
+                        <p>{{ product_rel.short_desc }} </p>
+                        <p>{{ product_rel.category.name }} </p>
+                    </div>
+                </a>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

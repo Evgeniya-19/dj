@@ -1,56 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Каталог</title>
-	<link rel="stylesheet" href="/static/geekshop/style.css">
-	<link rel="stylesheet" href="/static/geekshop/fonts/font-awesome/css/font-awesome.css">
-</head>
-<body>
-	<div class="container">
-		<div class="hero-white">
-			<div class="header clearfix">
-				<a href="/" class="logo"></a>
-				<ul class="menu">
-					<li><a href="/">домой</a></li>
-					<li><a href="/products/" class="active">продукты</a></li>
-					<li><a href="/contacts/">контакты</a></li>
+{% extends 'geekshop/base.html' %}
+{% load static %}
 
-				</ul>
-				<a href="#" class="search"></a>
-                <a href="#" class="basket"></a>
-			</div>
-		</div>
-
+{% block content %}
+{% include 'geekshop/includes/inc_main_menu.html' %}
 		<div class="details">
-			<div class="links clearfix">
-				<ul class="links-menu">
-					<li><a href="#" class="active">все</a></li>
-					<li><a href="#">дом</a></li>
-					<li><a href="#">офис</a></li>
-					<li><a href="#">модерн</a></li>
-					<li><a href="#">классика</a></li>
-				</ul>
-			</div>
+        {% include 'mainapp/includes/inc_category_menu.html' %}
 
 			<div class="details-products">
 				<div class="details-slider">
 					<div class="slider-product">
-						<img src="/static/geekshop/img/slider1.jpg">
+						<img src="/media/{{ hot_product.image }}">
 					</div>
 					<div class="slider-control">
 						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll.jpg" alt="">
+							<a href="#"><img src="/media/{{ hot_product.image }}" style="width: 100%" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll1.jpg" alt="">
+							<a href="#"><img src="/media/{{ hot_product.image }}" style="width: 100%" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
 						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll2.jpg" alt="">
+							<a href="#"><img src="/media/{{ hot_product.image }}" style="width: 100%" alt="">
 								<div class="text"></div>
 							</a>
 						</div>
@@ -58,91 +31,65 @@
 				</div>
 
 				<div class="description">
-					<h3 class="big-bold">Отличный стул</h3>
+					<h3 class="big-bold">{{ hot_product.name }}</h3>
 					<h3 class="red">горячее предложение</h3>
-					<p class="price"> 2585.9 <span>руб</span></p>
+					<p class="price">{{ hot_product.price }} <span>руб</span></p>
 					<a href="#" class="red-button">
 						заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
 					</a>
 					<div class="description-text">
-						<p>Расположитесь комфортно.</p> 
-						<p>Отличное качество материалов
-						позволит вам это.</p> 
-						<p>Различные цвета</p>
-						<p>высочайший уровень
-						эргономики и прочность.</p>
+						{{ hot_product.description }}
 					</div>
 				</div>
 			</div>
+
+        <div class="products_list" style="margin-top: 50px;">
+        {% if category %}
+      <div class="title clearfix">
+        <h2>
+          Категория: "{{ category.name|title }}"
+        </h2>
+      </div>
+        {% endif %}
+      <div class="category-products clearfix">
+
+        {% for product in products %}
+          <div class="block">
+            <a href="{% url 'basket:add' product.pk %}">
+              <img src="/media/{{ product.image }}" alt="">
+              <div class="text">
+                <img src="{% static 'geekshop/img/icon-hover.png' %}" alt="hover">
+                  <h4>{{ product.name }}</h4>
+                  <p>{{ product.description }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+
 
 			<div class="related">
-				<div class="title clearfix">
+                 <div class="title clearfix">
 					<h2>Похожие продукты</h2>
-					<a class="explore" href="#">показать все <img src="/ststic/geekshop/img/arrow.png" alt=""></a>
+					<a class="explore" href="#">показать все<img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
 				</div>
-				<div class="related-products clearfix">
+	         <div class="related-products clearfix">
+                    {% for product in same_products %}
 					<div class="block">
-						<a href="#"><img src="/ststic/geekshop/img/product-11.jpg" alt="">
+						<a href="{% url 'basket:add' product.pk %}"><img src="/media/{{ product.image }}" alt="">
 							<div class="text">
-								<img src="/ststic/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
+								<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="hover">
+								<h4>{{ product.name }}</h4>
+                                <p>{{ product.category.name }} </p>
+								<p>{{ product.short_desc }} </p>
 							</div>
 						</a>
 					</div>
-					<div class="block">
-						<a href="#"><img src="/ststic/geekshop/img/product-21.jpg" alt="">
-							<div class="text">
-								<img src="/ststic/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
-							</div>
-						</a>
-					</div>
-					<div class="block">
-						<a href="#"><img src="/ststic/geekshop/img/product-31.jpg" alt="">
-							<div class="text">
-								<img src="/ststic/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
-							</div>
-						</a>
-					</div>
+
+                    {% endfor %}
 
 				</div>
 			</div>
-		</div>
+      </div>
 
-		<div class="clr"></div>
+{% endblock %}
 
-	</div>	
-
-	<div class="footer">
-        <div class="clearfix">
-            <div class="text-footer">
-                <h3>контакты</h3>
-            </div>
-            <div class="text-footer">
-                <h3>полезная информация</h3>
-            </div>
-            <div class="text-footer clearfix">
-                <h3>Оставайтесь на связи</h3>
-                <p>Подписаться на новости и рассылки</p>
-                <form>
-                    <input type="email" name="email" placeholder="ваш email">
-                    <a href="#"><i class="fa fa-paper-plane fa-2x" aria-hidden="true"></i></a>
-                </form>
-            </div>
-        </div>
-        <p class="small">&copy; GB 2017</p>
-        <div class="social">
-            <a href="#" class="social1"></a>
-            <a href="#" class="social2"></a>
-            <a href="#" class="social3"></a>
-            <a href="#" class="social4"></a>
-        </div>
-        <p class="small">Положения &amp; Условия  /  Конфиденциальность &amp; Cookies</p>
-    </div>	
-
-</body>
-</html>

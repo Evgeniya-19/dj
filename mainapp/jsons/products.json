@@ -1,0 +1,21 @@
+[
+  {
+      "category": 'Стулья',
+      "name": "???? ?????????",
+      "short_desc": "??????",
+      "image": "products_images/product-21.jpg",
+      "description": "????????",
+      "price": "2000.00",
+      "quantity": 10
+  },
+  {
+
+      "category": 'Столы',
+      "name": "?????",
+      "short_desc": "",
+      "image": "products_images/slider-hotdeal.jpg",
+      "description": "",
+      "price": "10000.00",
+      "quantity": 5
+  }
+]
