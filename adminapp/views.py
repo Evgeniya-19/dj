@@ -9,6 +9,11 @@ from mainapp.models import ProductCategory, Product
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import DeleteView, UpdateView
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.db import connection
+from django.db.models import F, Q
 
 
 # def users(request):
@@ -261,3 +266,19 @@ def product_delete(request, pk):
         product.is_active = False if product.is_active else True
         product.save()
         return HttpResponseRedirect(reverse('adminapp:products', args=[product.category.pk]))
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x['sql'], queries))
+    print(f'db_profile {type} for {prefix}:')
+    [print(query['sql']) for query in update_queries]
+
+
+@receiver(pre_save, sender=ProductCategory)
+def product_is_active_update_productcategory_save(sender, instance, **kwargs):
+    if instance.pk:
+        if instance.is_active:
+            instance.product_set.update(is_active=True)
+        else:
+            instance.product_set.update(is_active=False)
+
+        db_profile_by_type(sender, 'UPDATE', connection.queries)
